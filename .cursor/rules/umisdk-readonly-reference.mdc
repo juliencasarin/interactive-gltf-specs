@@ -1,0 +1,13 @@
+---
+description: UMI3D SDK folder is read-only reference; do not edit
+alwaysApply: true
+---
+
+# UMI3D SDK — reference only
+
+The workspace often includes the SDK as its **own root** (multi-root), e.g. **`UMI3D-SDK-version-2.9`**, with typical subtrees such as **`docs/`** and **`UMI3D-SDK/`**. The whole tree under that root is **read-only**.
+
+- **Do not** create, edit, delete, or refactor anything under `UMI3D-SDK-version-2.9/` — including **`UMI3D-SDK-version-2.9/docs`**, **`UMI3D-SDK-version-2.9/UMI3D-SDK`**, and any other path inside that root.
+- It is **reference technology** that inspires the **interactive-gltf** specification; work belongs in the **interactive-gltf-specs** repo (e.g. `README.md`, future Markdown spec files), not in the SDK tree.
+
+If a change seems required in the SDK, stop and ask the user — the SDK copy in the workspace must stay untouched.
