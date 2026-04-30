@@ -1,21 +1,27 @@
 ## Cursor Cloud specific instructions
 
-This is a **specification-only / documentation-only** repository (`interactive-gltf-specs`).
-It defines an extension of the glTF format for interactivity.
+This repository defines **interactive-gltf** (glTF extensions for interactivity): **`proposals/`**, **`specifications/`**, and supporting Markdown only.
 
-### Reference SDK (do not modify)
+### Reference UMI3D repositories (do not modify)
 
-The workspace may include **`UMI3D-SDK-version-2.9`** as a **separate folder root** (multi-root), for example next to `interactive-gltf-specs`. On a typical machine it may live at `C:\Repos\UMI3D\UMI3D-SDK-version-2.9`. Under that root you will see subtrees such as **`docs/`** and **`UMI3D-SDK/`** — the **entire** SDK tree is **read-only reference**.
+The workspace may include **UMI3D** trees as **separate folder roots** (multi-root), for example under `C:\Repos\UMI3D\`. The **entire** tree under each root is **read-only reference**:
 
-- **Do not modify** any file under `UMI3D-SDK-version-2.9` (including `docs`, `UMI3D-SDK`, and everything else): no edits, renames, or deletes.
-- It reflects the **UMI3D** technology that **inspires** interactive-gltf; specification work belongs in **this** repo’s own files (e.g. `README.md`, future spec Markdown), not in the SDK.
+| Folder | Role | Upstream (informative) |
+|--------|------|------------------------|
+| **`UMI3D-SDK-version-2.9`** | SDK (`docs/`, `UMI3D-SDK/`, …) | [UMI3D/UMI3D-SDK](https://github.com/UMI3D/UMI3D-SDK) |
+| **`UMI3D-BROWSER-version-3.6_sdk2.9`** | Unity Browser | [UMI3D/UMI3D-BROWSER](https://github.com/UMI3D/UMI3D-BROWSER) |
+| **`UMI3D-Sketcher-no-history-2.11`** | Sketcher (Intraverse) | [UMI3D/UMI3D-Sketcher](https://github.com/UMI3D/UMI3D-Sketcher) |
 
-### Key facts
+- **Do not modify** any file under those roots: no edits, renames, or deletes.
+- They reflect **UMI3D** technology that **inspires** interactive-gltf; portable format definitions belong in **`proposals/`** and **`specifications/`** at this repo root.
 
-- The repo contains **no source code, no dependencies, no build tooling, and no runnable services** (aside from optional read-only UMI3D SDK reference material, if present).
-- The only meaningful files are `README.md` (project description) and `LICENSE` (Apache 2.0).
-- There is no package manager, no lockfile, no test suite, no linter configuration, and no CI pipeline.
-- No update script is needed — there are no dependencies to refresh.
+### Reference implementation (separate repository)
+
+POC and product code (**`igltf-engine`**, editor frontend/backend, Python core) live in the **`interactive-gltf-engine`** repository, not here.
+
+### Format changes driven by engine work
+
+When implementation in **`interactive-gltf-engine`** affects extension JSON, script packaging, host API, or author-visible contracts, update **`proposals/`** and **`specifications/`** in **this** repository in the same effort and use the Cursor skill **`sync-interactive-gltf-format-from-engine`**.
 
 ### Language
 
@@ -23,6 +29,5 @@ The workspace may include **`UMI3D-SDK-version-2.9`** as a **separate folder roo
 
 ### Development workflow
 
-- Contributions are documentation / specification text in Markdown.
-- No build, lint, or test commands exist.
-- Standard git operations (`git add`, `git commit`, `git push`) are sufficient for all workflows.
+- Edit Markdown and JSON Schema; no application build is required for documentation-only changes.
+- Standard git operations (`git add`, `git commit`, `git push`) apply to all contributions.

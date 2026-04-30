@@ -29,13 +29,15 @@ You do **not** need to know **UMI3D** to use this project. For teams that alread
 
 **Language:** Documents under `specifications/` and `proposals/` are written in **English**, per repository convention.
 
+**Reference implementation (separate repo):** The **interactive-gltf-engine** POC and runtime/editor code live in the **`interactive-gltf-engine`** repository, not in this tree. When that code changes extension JSON, script packaging, or host API semantics, update this repository’s **`proposals/`** and **`specifications/`** and use the Cursor skill **`.cursor/skills/sync-interactive-gltf-format-from-engine/SKILL.md`**.
+
 ## Reference material (read-only)
 
 If **`UMI3D-SDK-version-2.9`** is present in the workspace (often as a second root, with `docs/` and `UMI3D-SDK/`), it is **read-only** reference for UMI3D terminology and DTOs. **Do not modify** that tree; evolve the interactive-gltf specification only in **this** repository.
 
 ## Contributing
 
-Contributions are **documentation and specification text** (Markdown, JSON Schema). There is no application code or build step in this repository. Use normal Git workflows (`git add`, `git commit`, `git push`).
+Contributions are **documentation and specification text** (Markdown, JSON Schema). Use normal Git workflows (`git add`, `git commit`, `git push`). Implementations belong in the separate **`interactive-gltf-engine`** repository.
 
 ## License
 

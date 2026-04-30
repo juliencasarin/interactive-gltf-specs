@@ -1,13 +1,19 @@
 ---
-description: UMI3D SDK folder is read-only reference; do not edit
+description: UMI3D SDK, Browser, and Sketcher workspace folders are read-only reference; do not edit
 alwaysApply: true
 ---
 
-# UMI3D SDK — reference only
+# UMI3D reference repositories — read-only
 
-The workspace often includes the SDK as its **own root** (multi-root), e.g. **`UMI3D-SDK-version-2.9`**, with typical subtrees such as **`docs/`** and **`UMI3D-SDK/`**. The whole tree under that root is **read-only**.
+The workspace may include several **UMI3D** trees as their **own roots** (multi-root). They are **upstream reference** for terminology, runtime behavior, and authoring tools. The **entire** tree under each root listed below is **read-only** in this workspace.
 
-- **Do not** create, edit, delete, or refactor anything under `UMI3D-SDK-version-2.9/` — including **`UMI3D-SDK-version-2.9/docs`**, **`UMI3D-SDK-version-2.9/UMI3D-SDK`**, and any other path inside that root.
-- It is **reference technology** that inspires the **interactive-gltf** specification; work belongs in the **interactive-gltf-specs** repo (e.g. `README.md`, future Markdown spec files), not in the SDK tree.
+| Workspace folder (typical) | Upstream (informative) |
+|-----------------------------|-------------------------|
+| **`UMI3D-SDK-version-2.9`** | [UMI3D/UMI3D-SDK](https://github.com/UMI3D/UMI3D-SDK) |
+| **`UMI3D-BROWSER-version-3.6_sdk2.9`** (Unity Browser) | [UMI3D/UMI3D-BROWSER](https://github.com/UMI3D/UMI3D-BROWSER) |
+| **`UMI3D-Sketcher-no-history-2.11`** (Intraverse Sketcher / Sketcher) | [UMI3D/UMI3D-Sketcher](https://github.com/UMI3D/UMI3D-Sketcher) |
 
-If a change seems required in the SDK, stop and ask the user — the SDK copy in the workspace must stay untouched.
+- **Do not** create, edit, delete, or refactor anything under those roots — including nested **`docs/`**, **`UMI3D-SDK/`**, **`UMI3D-BROWSER/`**, **`Intraverse/`**, dependencies, or any other path inside each root.
+- They are **reference technology** that informs the **interactive-gltf** specification; portable definitions belong in **`proposals/`** and **`specifications/`** in **interactive-gltf-specs**; reference implementation code belongs in **`interactive-gltf-engine`** — not in these UMI3D trees.
+
+If a change seems required in an UMI3D reference tree, **stop and ask the user** — local copies in the workspace must stay untouched.
