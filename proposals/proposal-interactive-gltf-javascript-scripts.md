@@ -24,7 +24,7 @@ Each row maps to the **points to decide** tracked in the technical design (forme
 
 | name | description | comments | decision | state |
 |------|-------------|----------|----------|-------|
-| Asset and scripts | Resolve: extension names (`EXT_*` vs vendor), JSON Schema location; inline script blobs in `.glb` and size cap; multi-file `scripts[]` resolution and optional `scriptId` on interaction; minification vs stable `callback` export names. | [JCA] : promoted from `temp-md/interactive-gltf-javascript-scripts-and-host-api.md` (2026-04-17T17:00:00Z) | - | open |
+| Asset and scripts | Resolve: extension names (`EXT_*` vs vendor), JSON Schema location; inline script blobs in `.glb` and size cap; multi-file `scripts[]` resolution and optional `scriptId` on interaction; minification vs stable `callback` export names. | [JCA] : promoted from `temp-md/interactive-gltf-javascript-scripts-and-host-api.md` (2026-04-17T17:00:00Z). [JCA] : reference implementation stores optional per-script **`scriptRole`** (`interaction` \| `behaviour`) and **`scriptExports`** (classic global names) in the igltf-editor project JSON alongside **`assetKind`**; these mirror intended `scripts[]` semantics and should fold into normative schema when extension names freeze. (2026-05-14T17:00:00Z). [JCA] : optional **`interactionKind`** on script assets records the UMI3D-shaped template used at creation (`event`, `link`, `form`, `manipulation`, `drawing`); editor-only tooling metadata until export maps scripts into normative glTF. (2026-05-14T18:00:00Z). [JCA] : **igltf-editor** scene nodes may include **`interactionAttachments`** — an array of `{ id, scriptAssetRef, serializedProps? }` (stable **`id`** per row; editor preview sets **`targetId`** from the host scene node id). Legacy singular fields `interactionScriptAssetRef`, `interactionTargetNodeId`, `interactionTargetSerializedId`, and `interactionSerializedProps` are still accepted on load and normalized in the editor; new saves use **`interactionAttachments`** only. (2026-05-14T22:30:00Z). [JCA] : per-attachment **`targetNodeId`** / **`targetSerializedId`** and authoring UI for **`targetId`** were removed; storage keeps only **`scriptAssetRef`** and **`serializedProps`**. (2026-05-16T12:00:00Z) | - | open |
 | `payload` and handler argument | Normative mapping for `payload.umi3d` per `InteractionRequestDto` subtype and operation key; omitted-field rules; versioning when UMI3D DTOs evolve; behaviour if author uses reserved `umi3d` inside glTF `payload` (error vs override vs merge). | [JCA] : promoted from temp-md (2026-04-17T17:00:00Z) | - | open |
 | Global host object (`GLTF`) | Final global name (`GLTF` vs `interactiveGltf` vs other) to avoid collisions; read-only vs mutable `SceneObjectHandle`; sync vs async; optional non-global alias for ES modules. | [JCA] : promoted from temp-md (2026-04-17T17:00:00Z) | - | open |
 | Transactions (UMI3D-shaped JSON) | Granularity (single vs batch operations); schema source (interaction requests only vs property/entity updates as EDK); validation allowlist; mandatory reuse of network apply path in CDK; local-only vs forward to server vs both; formal `Umi3dTransactionJSON` schema. | [JCA] : promoted from temp-md (2026-04-17T17:00:00Z) | - | open |
@@ -71,6 +71,7 @@ Add a **root-level extension** (name TBD, e.g. `EXT_interactive_gltf_scripts` or
           "uri": "behaviors/pick-handler.mjs",
           "mimeType": "text/javascript",
           "kind": "module",
+          "scriptRole": "interaction",
           "integrity": "sha384-…"
         },
         {
@@ -86,6 +87,10 @@ Add a **root-level extension** (name TBD, e.g. `EXT_interactive_gltf_scripts` or
 ```
 
 **Why not put JS inside `buffers`?** glTF buffers are for geometry/skin/animation; embedding large scripts in binary chunks hurts authoring and caching. Prefer **URI** (relative to `.gltf` / `.glb` container rules) with optional **integrity** (SRI-style).
+
+**`scriptRole` (optional)** classifies the script for tools and runtimes — for example **`interaction`** (handlers bound via interaction DTO **`callback`**) vs **`behaviour`** (lifecycle / per-node scripts). **`kind`** remains the ECMAScript load mode **`module`** \| **`classic`**; do not overload **`kind`** for this distinction. The **interactive-gltf-engine** editor persists **`scriptRole`** (and optional classic **`scriptExports`**) on **project assets** until normative extension names are frozen. The same editor may set **`interactionKind`** (`event`, `link`, `form`, `manipulation`, `drawing`) when a script is created from a template, as non-normative authoring metadata aligned with [`proposal-umi3d-interaction-model.md`](proposal-umi3d-interaction-model.md).
+
+**Project authoring workspace (interactive-gltf-engine):** interaction scripts that ship with a project live under **`assets/`** on disk (`*.js`/`.mjs`/`.cjs`, typically flat `assetId`-named filenames after ingestion) and **must appear in authoring `assets[]`** alongside glTF payloads. The authoring backend **mirrors stray files on disk back into project metadata** — required because **`PUT /document`** prunes **unreferenced** entries under **`assets/`** — and tooling may expose a **WebSocket** channel so editors refresh after MCP/IDE-side writes without manual reload.
 
 **`.glb` note:** For single-file delivery, either (a) **append** script sidecars next to the `.glb` in the package, or (b) define an optional **`data` + `byteLength`** inline slot in the extension for small snippets only; keep large code external.
 
